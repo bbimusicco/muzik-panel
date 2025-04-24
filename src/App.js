@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import 'react-h5-audio-player/lib/styles.css';
+import './App.css';
 import AudioPlayer from 'react-h5-audio-player';
 import playlistData from './playlists.json';
 
@@ -15,7 +16,8 @@ export default function App() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (username === 'admin' && password === 'admin') {
+
+    if (username === 'admin' && password === 'Babalar2009!') {
       setIsLoggedIn(true);
       setIsAdmin(true);
     } else if (username === 'demo' && password === 'demo') {
@@ -95,35 +97,33 @@ export default function App() {
     }}>
       <img src={logo} alt="Logo" style={{ width: 120, marginBottom: 20 }} />
       <h1 style={{ marginBottom: 20 }}>Çalma Listesi</h1>
-
       <AudioPlayer
-  src={tracks[currentTrackIndex].src}
-  autoPlay
-  showSkipControls
-  showJumpControls={false}
-  showLoopControl={false}
-  onEnded={() => {
-    if (currentTrackIndex < tracks.length - 1) {
-      setCurrentTrackIndex(currentTrackIndex + 1);
-    }
-  }}
-  onClickNext={() => {
-    if (currentTrackIndex < tracks.length - 1) {
-      setCurrentTrackIndex(currentTrackIndex + 1);
-    }
-  }}
-  onClickPrevious={() => {
-    if (currentTrackIndex > 0) {
-      setCurrentTrackIndex(currentTrackIndex - 1);
-    }
-  }}
-/>
-
+        src={tracks[currentTrackIndex].src}
+        autoPlay
+        showSkipControls
+        showJumpControls={false}
+        loop={false}
+        onClickPrevious={() => {
+          if (currentTrackIndex > 0) {
+            setCurrentTrackIndex(currentTrackIndex - 1);
+          }
+        }}
+        onClickNext={() => {
+          if (currentTrackIndex < tracks.length - 1) {
+            setCurrentTrackIndex(currentTrackIndex + 1);
+          }
+        }}
+        onEnded={() => {
+          if (currentTrackIndex < tracks.length - 1) {
+            setCurrentTrackIndex(currentTrackIndex + 1);
+          }
+        }}
+      />
 
       {isAdmin && (
-        <p style={{ marginTop: 20, color: '#ccc' }}>
-          Şu an çalıyor: <strong>{tracks[currentTrackIndex].name}</strong>
-        </p>
+        <div style={{ marginTop: 30, color: '#aaa' }}>
+          <p>Şu an çalan: {tracks[currentTrackIndex].name}</p>
+        </div>
       )}
     </div>
   );

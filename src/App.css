@@ -36,3 +36,6 @@
     transform: rotate(360deg);
   }
 }
+.rhap_repeat-button {
+  display: none !important;
+}
