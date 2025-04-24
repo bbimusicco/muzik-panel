@@ -101,6 +101,7 @@ export default function App() {
   autoPlay
   showSkipControls
   showJumpControls={false}
+  showLoopControl={false}
   onEnded={() => {
     if (currentTrackIndex < tracks.length - 1) {
       setCurrentTrackIndex(currentTrackIndex + 1);
