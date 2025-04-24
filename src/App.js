@@ -17,7 +17,10 @@ export default function App() {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    if (username === 'admin' && password === 'Babalar2009!') {
+    if (
+      (username === 'admin' && password === 'Babalar2009!') ||
+      (username === 'admin1' && password === 'Babalar2009!')
+    ) {
       setIsLoggedIn(true);
       setIsAdmin(true);
     } else if (username === 'demo' && password === 'demo') {
@@ -25,7 +28,7 @@ export default function App() {
       setIsAdmin(false);
     } else {
       alert('Kullanıcı adı veya şifre yanlış');
-    }
+    }    
   };
 
   if (!isLoggedIn) {
