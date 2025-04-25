@@ -10,7 +10,6 @@ export default function App() {
   const [password, setPassword] = useState('');
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [logoFade, setLogoFade] = useState(false);
-  const [backgroundColor, setBackgroundColor] = useState('#000');
 
   const tracks = playlistData['playlists/tella-kebap-demo'];
   const isTella = username === 'tellakebap.1';
@@ -19,20 +18,23 @@ export default function App() {
     ? process.env.PUBLIC_URL + '/tella-logo.png'
     : process.env.PUBLIC_URL + '/logo.png';
 
-  // Apply fade transition once when username becomes 'tellakebap.1'
+  // Logo geçişi sadece değiştiğinde çalışsın
+  useEffect(() => {
+    setLogoFade(true);
+    const timeout = setTimeout(() => setLogoFade(false), 300);
+    return () => clearTimeout(timeout);
+  }, [logo]);
+
+  // Arka plan geçişi
   useEffect(() => {
     const body = document.body;
     body.style.transition = 'background-color 0.8s ease';
-    if (username === 'tellakebap.1') {
-      setBackgroundColor('#0d2048');
+    if (isTella || (isLoggedIn && username === 'tellakebap.1')) {
+      body.style.backgroundColor = '#0d2048';
     } else {
-      setBackgroundColor('#000');
+      body.style.backgroundColor = '#000';
     }
-  }, [username]);
-
-  useEffect(() => {
-    document.body.style.backgroundColor = backgroundColor;
-  }, [backgroundColor]);
+  }, [username, isLoggedIn]);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -80,7 +82,7 @@ export default function App() {
 
   return (
     <div className="app-container">
-      <img src={logo} alt="Logo" className="logo" />
+      <img src={logo} alt="Logo" className={`logo ${logoFade ? 'fade-out' : ''}`} />
       <h1 className="playlist-title">Çalma Listesi</h1>
 
       <div className="track-display-column">

@@ -3,7 +3,17 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #000;
   color: #fff;
-  transition: background-color 0.5s ease;
+  transition: background-color 0.8s ease;
+}
+
+.logo {
+  width: 150px;
+  margin-bottom: 20px;
+  transition: opacity 0.5s ease;
+}
+
+.logo.fade-out {
+  opacity: 0;
 }
 
 .login-container {
@@ -12,18 +22,6 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #000;
-}
-
-.logo {
-  width: 150px;
-  margin-bottom: 20px;
-  transition: opacity 0.5s ease;
-  opacity: 1;
-}
-
-.logo.fade-out {
-  opacity: 0;
 }
 
 .title {
@@ -73,127 +71,44 @@ body {
 }
 
 .app-container {
-  background-color: #000;
-  color: #fff;
-  min-height: 100vh;
-  padding: 40px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  padding: 40px;
+  min-height: 100vh;
+  background-color: transparent;
 }
 
 .playlist-title {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   font-size: 24px;
   font-weight: bold;
 }
 
-.track-display {
+.track-display-column {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: 20px;
-  gap: 20px;
+  margin-bottom: 30px;
 }
 
 .track-cover {
-  width: 80px;
-  height: 80px;
-  border-radius: 4px;
+  width: 200px;
+  height: 200px;
   object-fit: cover;
+  margin-bottom: 10px;
+  border-radius: 8px;
 }
 
-.track-details {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.track-details h2 {
-  margin: 0;
-  font-size: 18px;
+.track-title {
+  font-size: 20px;
   font-weight: bold;
 }
 
-.track-details p {
-  margin: 4px 0 0;
-  font-size: 14px;
-  color: #ccc;
-}
-
-.rhap_container {
-  background-color: #111;
-  border-radius: 10px;
-  max-width: 500px;
+.player-wrapper {
   width: 100%;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-  padding: 10px;
-}
-
-.rhap_main-controls-button {
-  color: white;
-}
-
-.rhap_time {
-  color: #ccc;
-}
-
-.rhap_progress-bar-show-download {
-  background-color: #444;
-}
-
-.rhap_progress-indicator {
-  background-color: #1db954;
-}
-
-.rhap_volume-bar {
-  background-color: #444;
-}
-
-.rhap_volume-indicator {
-  background-color: #1db954;
-}
-
-.rhap_play-status--playing .rhap_play-pause-button {
-  color: #1db954;
-}
-.glass-container {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
-  padding: 30px;
-  max-width: 500px;
-  margin: 0 auto;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-}
-.rhap_container {
-  max-width: 700px;
-  border-radius: 16px;
-  background-color: rgba(0, 0, 0, 0.6) !important;
-  box-shadow: 0 0 20px rgba(0,0,0,0.3);
-  margin: 20px auto;
-}
-
-.rhap_controls-section {
-  justify-content: space-around;
-}
-
-.rhap_main-controls-button {
-  background-color: white !important;
-  color: black !important;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  font-size: 20px !important;
-}
-.rhap_container {
   max-width: 600px;
+  padding: 20px;
+  background: rgba(0,0,0,0.6);
   border-radius: 16px;
-  background-color: rgba(0, 0, 0, 0.8);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-}
-body {
-  transition: background-color 0.5s ease;
 }
