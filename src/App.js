@@ -8,43 +8,44 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [isAdmin, setIsAdmin] = useState(false);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
-const [logoFade, setLogoFade] = useState(false);
-
+  const [logoFade, setLogoFade] = useState(false);
+  const [backgroundColor, setBackgroundColor] = useState('#000');
 
   const tracks = playlistData['playlists/tella-kebap-demo'];
-
   const isTella = username === 'tellakebap.1';
+
   const logo = isTella
     ? process.env.PUBLIC_URL + '/tella-logo.png'
     : process.env.PUBLIC_URL + '/logo.png';
 
-    useEffect(() => {
-      const body = document.body;
-      body.style.transition = 'background-color 0.8s ease';
-      body.style.backgroundColor = isTella ? '#0d2048' : '#000';
-    
-      // Logo fade animasyonu
-      setLogoFade(true);
-      const timeout = setTimeout(() => {
-        setLogoFade(false);
-      }, 200);
-    
-      return () => clearTimeout(timeout);
-    }, [isTella]);    
+  // Apply fade transition once when username becomes 'tellakebap.1'
+  useEffect(() => {
+    const body = document.body;
+    body.style.transition = 'background-color 0.8s ease';
+    if (username === 'tellakebap.1') {
+      setBackgroundColor('#0d2048');
+    } else {
+      setBackgroundColor('#000');
+    }
+  }, [username]);
+
+  useEffect(() => {
+    document.body.style.backgroundColor = backgroundColor;
+  }, [backgroundColor]);
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if ((username === 'admin' || username === 'admin1') && password === 'Babalar2009!') {
+    const validLogins = [
+      { user: 'admin', pass: 'Babalar2009!' },
+      { user: 'admin1', pass: 'Babalar2009!' },
+      { user: 'demo', pass: 'demo' },
+      { user: 'tellakebap.1', pass: 't03kdA+n' },
+    ];
+
+    const matched = validLogins.find(u => u.user === username && u.pass === password);
+    if (matched) {
       setIsLoggedIn(true);
-      setIsAdmin(true);
-    } else if (username === 'demo' && password === 'demo') {
-      setIsLoggedIn(true);
-      setIsAdmin(false);
-    } else if (username === 'tellakebap.1' && password === 't03kdA+n') {
-      setIsLoggedIn(true);
-      setIsAdmin(false);
     } else {
       alert('Kullanıcı adı veya şifre yanlış');
     }
@@ -53,7 +54,7 @@ const [logoFade, setLogoFade] = useState(false);
   if (!isLoggedIn) {
     return (
       <div className="login-container">
-        <img src={logo} alt="Logo" className={`logo ${logoFade ? 'fade-out' : ''}`}/>
+        <img src={logo} alt="Logo" className={`logo ${logoFade ? 'fade-out' : ''}`} />
         <h1 className="title">Restoran Müzik Paneli</h1>
         <form onSubmit={handleLogin} className="login-form">
           <div className="input-group">
@@ -81,34 +82,36 @@ const [logoFade, setLogoFade] = useState(false);
     <div className="app-container">
       <img src={logo} alt="Logo" className="logo" />
       <h1 className="playlist-title">Çalma Listesi</h1>
-      <AudioPlayer
-        src={tracks[currentTrackIndex].src}
-        autoPlay
-        showSkipControls
-        showJumpControls={false}
-        customAdditionalControls={[]}
-        onClickPrevious={() => {
-          if (currentTrackIndex > 0) {
-            setCurrentTrackIndex(currentTrackIndex - 1);
-          }
-        }}
-        onClickNext={() => {
-          if (currentTrackIndex < tracks.length - 1) {
-            setCurrentTrackIndex(currentTrackIndex + 1);
-          }
-        }}
-        onEnded={() => {
-          if (currentTrackIndex < tracks.length - 1) {
-            setCurrentTrackIndex(currentTrackIndex + 1);
-          }
-        }}
-      />
 
-      {isAdmin && (
-        <div className="admin-info">
-          <p>Şu an çalan: {tracks[currentTrackIndex].name}</p>
-        </div>
-      )}
+      <div className="track-display-column">
+        <img className="track-cover" src={tracks[currentTrackIndex].image} alt="Kapak" />
+        <h2 className="track-title">{tracks[currentTrackIndex].name}</h2>
+      </div>
+
+      <div className="player-wrapper">
+        <AudioPlayer
+          src={tracks[currentTrackIndex].src}
+          autoPlay
+          showSkipControls
+          showJumpControls={false}
+          customAdditionalControls={[]}
+          onClickPrevious={() => {
+            if (currentTrackIndex > 0) {
+              setCurrentTrackIndex(currentTrackIndex - 1);
+            }
+          }}
+          onClickNext={() => {
+            if (currentTrackIndex < tracks.length - 1) {
+              setCurrentTrackIndex(currentTrackIndex + 1);
+            }
+          }}
+          onEnded={() => {
+            if (currentTrackIndex < tracks.length - 1) {
+              setCurrentTrackIndex(currentTrackIndex + 1);
+            }
+          }}
+        />
+      </div>
     </div>
   );
 }
