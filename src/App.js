@@ -52,7 +52,7 @@ export default function App() {
     if (isLoggedIn) {
       const checkPayment = async () => {
         try {
-          const response = await fetch(`/api/check-payment/'+{username}`);
+          const response = await fetch(`/api/check-payment/${username}`);
           const data = await response.json();
           setIsPaid(data.paid);
         } catch (error) {
