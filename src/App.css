@@ -6,58 +6,116 @@ body {
   transition: background-color 0.8s ease;
 }
 
-.logo {
-  width: 150px;
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  min-width: 220px;
+}
+
+.sidebar-logo {
+  width: 120px;
   margin-bottom: 20px;
-  transition: opacity 0.5s ease;
 }
 
-.logo.fade-out {
-  opacity: 0;
+.playlist-button {
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+  padding: 10px 15px;
+  width: 100%;
+  text-align: center;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
+.playlist-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.playlist-button.active {
+  background-color: white;
+  color: #000;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  gap: 20px;
+}
+
+.track-cover {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.track-title {
+  margin-top: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
+audio {
+  width: 100%;
+  max-width: 400px;
+}
 .login-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
-}
-
-.title {
-  font-size: 28px;
-  margin-bottom: 20px;
+  text-align: center;
+  background-color: #000;
 }
 
 .login-form {
   display: flex;
   flex-direction: column;
-  width: 300px;
+  gap: 10px;
+  margin-top: 20px;
 }
 
 .input-group {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
   background-color: #111;
-  border: 1px solid #444;
-  border-radius: 4px;
   padding: 8px;
-  gap: 10px;
+  border-radius: 4px;
+  border: 1px solid #444;
 }
 
 .input-group input {
-  flex: 1;
   background: none;
   border: none;
-  color: #fff;
+  color: white;
   outline: none;
+  flex: 1;
+  margin-left: 8px;
 }
 
 .login-button {
   padding: 10px;
-  background-color: #fff;
-  color: #000;
+  background-color: white;
+  color: black;
   font-weight: bold;
   border: none;
   border-radius: 4px;
@@ -67,76 +125,151 @@ body {
 
 .login-button:hover {
   background-color: #ddd;
-  color: #000;
 }
 
-.app-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px;
-  min-height: 100vh;
-  background-color: transparent;
-}
-
-.playlist-title {
-  margin-bottom: 20px;
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.track-display-column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 30px;
-}
-
-.track-cover {
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-  margin-bottom: 10px;
-  border-radius: 8px;
-}
-
-.track-title {
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.player-wrapper {
-  width: 100%;
-  max-width: 600px;
-  padding: 20px;
-  background: rgba(0,0,0,0.6);
-  border-radius: 16px;
-}
-.dropdown-container {
+.logo {
+  width: 150px;
   margin-bottom: 20px;
 }
-
-.dropdown {
-  padding: 10px;
-  border-radius: 8px;
-  background-color: #111;
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #000;
   color: #fff;
-  border: 1px solid #555;
-  font-size: 16px;
-  transition: all 0.3s ease;
+  transition: background-color 0.8s ease; /* fade için burası önemli */
+}
+body {
+  transition: background-color 0.8s ease;
 }
 
-.dropdown:hover {
-  background-color: #222;
-}
-
-/* Track cover ve yazı fade geçişi */
-.track-display-column.fade {
-  opacity: 0;
+.logo, .sidebar-logo {
   transition: opacity 0.5s ease;
-}
-
-.track-display-column {
   opacity: 1;
-  transition: opacity 0.5s ease;
+}
+
+.logo.fade-out, .sidebar-logo.fade-out {
+  opacity: 0;
+}
+.fade-in {
+  animation: fadeIn 1s ease forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+.rhap_container {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border-radius: 16px;
+  padding: 10px;
+  backdrop-filter: blur(8px);
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto 0 auto;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.rhap_main-controls-button {
+  color: #fff !important;
+  font-size: 24px;
+}
+
+.rhap_time {
+  color: #ccc !important;
+}
+
+.rhap_progress-filled {
+  background-color: #1DB954 !important; /* Spotify yeşili */
+}
+
+.rhap_progress-indicator {
+  background-color: #fff !important;
+  width: 12px;
+  height: 12px;
+}
+/* Giriş sayfası fade-in animasyonu */
+.fade-in {
+  animation: fadeIn 1s ease forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Audio Player Spotify tarzı */
+.rhap_container {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border-radius: 16px;
+  padding: 10px;
+  backdrop-filter: blur(8px);
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto 0 auto;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.rhap_main-controls-button {
+  color: #fff !important;
+  font-size: 24px;
+}
+
+.rhap_time {
+  color: #ccc !important;
+}
+
+.rhap_progress-filled {
+  background-color: #1DB954 !important; /* Spotify yeşili */
+}
+
+.rhap_progress-indicator {
+  background-color: #fff !important;
+  width: 12px;
+  height: 12px;
+}
+/* Fade efekt */
+.fade-in {
+  animation: fadeIn 1s ease forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Spotify tarzı player */
+.rhap_container {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border-radius: 16px;
+  padding: 10px;
+  backdrop-filter: blur(8px);
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto 0 auto;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.rhap_main-controls-button {
+  color: #fff !important;
+  font-size: 24px;
+}
+
+.rhap_time {
+  color: #ccc !important;
+}
+
+.rhap_progress-filled {
+  background-color: #1DB954 !important;
+}
+
+.rhap_progress-indicator {
+  background-color: #fff !important;
+  width: 12px;
+  height: 12px;
 }

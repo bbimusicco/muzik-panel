@@ -9,42 +9,37 @@ export default function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
-  const [selectedPlaylist, setSelectedPlaylist] = useState('playlists/tella-kebap-demo');
-  const [fadeTransition, setFadeTransition] = useState(false);
+  const [selectedPlaylist, setSelectedPlaylist] = useState('Tella Kebap 1');
   const [logoFade, setLogoFade] = useState(false);
+  const [isTellaTheme, setIsTellaTheme] = useState(false);
 
   const playlists = {
-    'playlists/tella-kebap-demo': playlistData['playlists/tella-kebap-demo'],
-    'playlists/ikinci-playlist': playlistData['playlists/tella-kebap-demo'],
-    'playlists/ucuncu-playlist': playlistData['playlists/tella-kebap-demo'],
+    'Tella Kebap 1': playlistData['playlists/tella-kebap-demo'],
+    'Tella Kebap 2': playlistData['playlists/tella-kebap-demo'],
+    'Tella Kebap 3': playlistData['playlists/tella-kebap-demo'],
   };
 
-  const tracks = playlists[selectedPlaylist];
-  const isTella = username === 'tellakebap.1';
+  const tracks = playlists[selectedPlaylist] || [];
 
-  const logo = isTella
+  const logoSrc = isTellaTheme
     ? process.env.PUBLIC_URL + '/tella-logo.png'
     : process.env.PUBLIC_URL + '/logo.png';
 
+  // Login olduğunda arka plan ve tema değişimi
   useEffect(() => {
     const body = document.body;
     body.style.transition = 'background-color 0.8s ease';
-    if (isLoggedIn && username === 'tellakebap.1') {
+
+    if (isTellaTheme) {
       body.style.backgroundColor = '#0d2048';
     } else {
       body.style.backgroundColor = '#000';
     }
-
-    setLogoFade(true);
-    const timeout = setTimeout(() => {
-      setLogoFade(false);
-    }, 300);
-
-    return () => clearTimeout(timeout);
-  }, [isLoggedIn, username]);
+  }, [isTellaTheme]);
 
   const handleLogin = (e) => {
     e.preventDefault();
+
     const validLogins = [
       { user: 'admin', pass: 'Babalar2009!' },
       { user: 'admin1', pass: 'Babalar2009!' },
@@ -55,30 +50,25 @@ export default function App() {
     const matched = validLogins.find(u => u.user === username && u.pass === password);
     if (matched) {
       setIsLoggedIn(true);
+      setIsTellaTheme(username === 'tellakebap.1'); // login olurken set et
+      setLogoFade(true);
+      setTimeout(() => setLogoFade(false), 400);
     } else {
       alert('Kullanıcı adı veya şifre yanlış');
     }
   };
 
-  const handlePlaylistChange = (e) => {
-    setFadeTransition(true);
-    setTimeout(() => {
-      setSelectedPlaylist(e.target.value);
-      setCurrentTrackIndex(0);
-      setFadeTransition(false);
-    }, 300);
-  };
-
   if (!isLoggedIn) {
     return (
-      <div className="login-container">
-        <img src={logo} alt="Logo" className={`logo ${logoFade ? 'fade-out' : ''}`} />
+      <div className="login-container fade-in">
+        <img src={logoSrc} alt="Logo" className={`logo ${logoFade ? 'fade-out' : ''}`} />
         <h1 className="title">Restoran Müzik Paneli</h1>
         <form onSubmit={handleLogin} className="login-form">
           <div className="input-group">
             <span role="img" aria-label="user">👤</span>
             <input
               placeholder="Kullanıcı Adı"
+              value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
@@ -87,6 +77,7 @@ export default function App() {
             <input
               type="password"
               placeholder="Şifre"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
@@ -97,50 +88,58 @@ export default function App() {
   }
 
   return (
-    <div className="app-container">
-      <img src={logo} alt="Logo" className="logo" />
-      <h1 className="playlist-title">Çalma Listesi</h1>
+    <div className="app-layout fade-in">
+      <aside className="sidebar">
+        <img src={logoSrc} alt="Logo" className="sidebar-logo" />
+        <div className="playlist-buttons">
+          {Object.keys(playlists).map(name => (
+            <button
+              key={name}
+              className={`playlist-button ${selectedPlaylist === name ? 'active' : ''}`}
+              onClick={() => {
+                setSelectedPlaylist(name);
+                setCurrentTrackIndex(0);
+              }}
+            >
+              {name}
+            </button>
+          ))}
+        </div>
+      </aside>
 
-      {/* Playlist seçici */}
-      <div className="dropdown-container">
-        <select value={selectedPlaylist} onChange={handlePlaylistChange} className="dropdown">
-          <option value="playlists/tella-kebap-demo">Tella Kebap Playlist 1</option>
-          <option value="playlists/ikinci-playlist">Tella Kebap Playlist 2</option>
-          <option value="playlists/ucuncu-playlist">Tella Kebap Playlist 3</option>
-        </select>
-      </div>
+      <main className="main-content">
+        {tracks.length > 0 && (
+          <>
+            <div className="track-display">
+              <img className="track-cover" src={tracks[currentTrackIndex].image} alt="Kapak" />
+              <h2 className="track-title">{tracks[currentTrackIndex].name}</h2>
+            </div>
 
-      {/* Track göstergesi */}
-      <div className={`track-display-column ${fadeTransition ? 'fade' : ''}`}>
-        <img className="track-cover" src={tracks[currentTrackIndex].image} alt="Kapak" />
-        <h2 className="track-title">{tracks[currentTrackIndex].name}</h2>
-      </div>
-
-      {/* Player */}
-      <div className="player-wrapper">
-        <AudioPlayer
-          src={tracks[currentTrackIndex].src}
-          autoPlay
-          showSkipControls
-          showJumpControls={false}
-          customAdditionalControls={[]}
-          onClickPrevious={() => {
-            if (currentTrackIndex > 0) {
-              setCurrentTrackIndex(currentTrackIndex - 1);
-            }
-          }}
-          onClickNext={() => {
-            if (currentTrackIndex < tracks.length - 1) {
-              setCurrentTrackIndex(currentTrackIndex + 1);
-            }
-          }}
-          onEnded={() => {
-            if (currentTrackIndex < tracks.length - 1) {
-              setCurrentTrackIndex(currentTrackIndex + 1);
-            }
-          }}
-        />
-      </div>
+            <AudioPlayer
+              src={tracks[currentTrackIndex].src}
+              autoPlay
+              showSkipControls
+              showJumpControls={false}
+              customAdditionalControls={[]}
+              onClickPrevious={() => {
+                if (currentTrackIndex > 0) {
+                  setCurrentTrackIndex(currentTrackIndex - 1);
+                }
+              }}
+              onClickNext={() => {
+                if (currentTrackIndex < tracks.length - 1) {
+                  setCurrentTrackIndex(currentTrackIndex + 1);
+                }
+              }}
+              onEnded={() => {
+                if (currentTrackIndex < tracks.length - 1) {
+                  setCurrentTrackIndex(currentTrackIndex + 1);
+                }
+              }}
+            />
+          </>
+        )}
+      </main>
     </div>
   );
 }
