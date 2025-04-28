@@ -9,32 +9,39 @@ export default function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  const [selectedPlaylist, setSelectedPlaylist] = useState('playlists/tella-kebap-demo');
+  const [fadeTransition, setFadeTransition] = useState(false);
   const [logoFade, setLogoFade] = useState(false);
 
-  const tracks = playlistData['playlists/tella-kebap-demo'];
+  const playlists = {
+    'playlists/tella-kebap-demo': playlistData['playlists/tella-kebap-demo'],
+    'playlists/ikinci-playlist': playlistData['playlists/tella-kebap-demo'],
+    'playlists/ucuncu-playlist': playlistData['playlists/tella-kebap-demo'],
+  };
+
+  const tracks = playlists[selectedPlaylist];
   const isTella = username === 'tellakebap.1';
 
   const logo = isTella
     ? process.env.PUBLIC_URL + '/tella-logo.png'
     : process.env.PUBLIC_URL + '/logo.png';
 
-  // Logo geçişi sadece değiştiğinde çalışsın
-  useEffect(() => {
-    setLogoFade(true);
-    const timeout = setTimeout(() => setLogoFade(false), 300);
-    return () => clearTimeout(timeout);
-  }, [logo]);
-
-  // Arka plan geçişi
   useEffect(() => {
     const body = document.body;
     body.style.transition = 'background-color 0.8s ease';
-    if (isTella || (isLoggedIn && username === 'tellakebap.1')) {
+    if (isLoggedIn && username === 'tellakebap.1') {
       body.style.backgroundColor = '#0d2048';
     } else {
       body.style.backgroundColor = '#000';
     }
-  }, [username, isLoggedIn]);
+
+    setLogoFade(true);
+    const timeout = setTimeout(() => {
+      setLogoFade(false);
+    }, 300);
+
+    return () => clearTimeout(timeout);
+  }, [isLoggedIn, username]);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -51,6 +58,15 @@ export default function App() {
     } else {
       alert('Kullanıcı adı veya şifre yanlış');
     }
+  };
+
+  const handlePlaylistChange = (e) => {
+    setFadeTransition(true);
+    setTimeout(() => {
+      setSelectedPlaylist(e.target.value);
+      setCurrentTrackIndex(0);
+      setFadeTransition(false);
+    }, 300);
   };
 
   if (!isLoggedIn) {
@@ -82,14 +98,25 @@ export default function App() {
 
   return (
     <div className="app-container">
-      <img src={logo} alt="Logo" className={`logo ${logoFade ? 'fade-out' : ''}`} />
+      <img src={logo} alt="Logo" className="logo" />
       <h1 className="playlist-title">Çalma Listesi</h1>
 
-      <div className="track-display-column">
+      {/* Playlist seçici */}
+      <div className="dropdown-container">
+        <select value={selectedPlaylist} onChange={handlePlaylistChange} className="dropdown">
+          <option value="playlists/tella-kebap-demo">Tella Kebap Playlist 1</option>
+          <option value="playlists/ikinci-playlist">Tella Kebap Playlist 2</option>
+          <option value="playlists/ucuncu-playlist">Tella Kebap Playlist 3</option>
+        </select>
+      </div>
+
+      {/* Track göstergesi */}
+      <div className={`track-display-column ${fadeTransition ? 'fade' : ''}`}>
         <img className="track-cover" src={tracks[currentTrackIndex].image} alt="Kapak" />
         <h2 className="track-title">{tracks[currentTrackIndex].name}</h2>
       </div>
 
+      {/* Player */}
       <div className="player-wrapper">
         <AudioPlayer
           src={tracks[currentTrackIndex].src}

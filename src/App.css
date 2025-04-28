@@ -112,3 +112,31 @@ body {
   background: rgba(0,0,0,0.6);
   border-radius: 16px;
 }
+.dropdown-container {
+  margin-bottom: 20px;
+}
+
+.dropdown {
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #111;
+  color: #fff;
+  border: 1px solid #555;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.dropdown:hover {
+  background-color: #222;
+}
+
+/* Track cover ve yazı fade geçişi */
+.track-display-column.fade {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.track-display-column {
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
