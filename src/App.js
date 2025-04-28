@@ -11,7 +11,6 @@ export default function App() {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [selectedPlaylist, setSelectedPlaylist] = useState('Tella Kebap 1');
   const [logoFade, setLogoFade] = useState(false);
-  const [isTellaTheme, setIsTellaTheme] = useState(false);
 
   const playlists = {
     'Tella Kebap 1': playlistData['playlists/tella-kebap-demo'],
@@ -21,25 +20,34 @@ export default function App() {
 
   const tracks = playlists[selectedPlaylist] || [];
 
-  const logoSrc = isTellaTheme
+  const isTellaUser = username === 'tellakebap.1';
+
+  const logoSrc = isTellaUser
     ? process.env.PUBLIC_URL + '/tella-logo.png'
     : process.env.PUBLIC_URL + '/logo.png';
 
-  // Login olduğunda arka plan ve tema değişimi
+  // Username değişince hem logo hem background değişsin
   useEffect(() => {
     const body = document.body;
     body.style.transition = 'background-color 0.8s ease';
 
-    if (isTellaTheme) {
+    if (isTellaUser) {
       body.style.backgroundColor = '#0d2048';
     } else {
       body.style.backgroundColor = '#000';
     }
-  }, [isTellaTheme]);
+
+    // Logo fade başlat
+    setLogoFade(true);
+    const timer = setTimeout(() => {
+      setLogoFade(false);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [isTellaUser]);
 
   const handleLogin = (e) => {
     e.preventDefault();
-
     const validLogins = [
       { user: 'admin', pass: 'Babalar2009!' },
       { user: 'admin1', pass: 'Babalar2009!' },
@@ -50,9 +58,6 @@ export default function App() {
     const matched = validLogins.find(u => u.user === username && u.pass === password);
     if (matched) {
       setIsLoggedIn(true);
-      setIsTellaTheme(username === 'tellakebap.1'); // login olurken set et
-      setLogoFade(true);
-      setTimeout(() => setLogoFade(false), 400);
     } else {
       alert('Kullanıcı adı veya şifre yanlış');
     }
@@ -61,7 +66,11 @@ export default function App() {
   if (!isLoggedIn) {
     return (
       <div className="login-container fade-in">
-        <img src={logoSrc} alt="Logo" className={`logo ${logoFade ? 'fade-out' : ''}`} />
+        <img
+          src={logoSrc}
+          alt="Logo"
+          className={`logo ${logoFade ? 'fade-out' : ''}`}
+        />
         <h1 className="title">Restoran Müzik Paneli</h1>
         <form onSubmit={handleLogin} className="login-form">
           <div className="input-group">
@@ -90,7 +99,11 @@ export default function App() {
   return (
     <div className="app-layout fade-in">
       <aside className="sidebar">
-        <img src={logoSrc} alt="Logo" className="sidebar-logo" />
+        <img
+          src={logoSrc}
+          alt="Logo"
+          className={`sidebar-logo ${logoFade ? 'fade-out' : ''}`}
+        />
         <div className="playlist-buttons">
           {Object.keys(playlists).map(name => (
             <button
