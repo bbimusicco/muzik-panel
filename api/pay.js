@@ -1,25 +1,19 @@
-import Iyzipay from 'iyzipay';
-
-const iyzico = new Iyzipay({
-  apiKey: process.env.IYZIPAY_API_KEY,
-  secretKey: process.env.IYZIPAY_SECRET_KEY,
-  uri: 'https://sandbox-api.iyzipay.com'
-});
+import iyzico from '../../payment';
 
 export default function handler(req, res) {
   if (req.method === 'POST') {
     const { name, surname, email, cardHolderName, cardNumber, expireMonth, expireYear, cvc } = req.body;
 
     const request = {
-      locale: Iyzipay.LOCALE.TR,
+      locale: 'tr',
       conversationId: '123456789',
       price: '99.90',
       paidPrice: '99.90',
       currency: 'TRY',
       installment: '1',
       basketId: 'B67832',
-      paymentChannel: Iyzipay.PAYMENT_CHANNEL.WEB,
-      paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
+      paymentChannel: 'WEB',
+      paymentGroup: 'PRODUCT',
       paymentCard: {
         cardHolderName,
         cardNumber,
@@ -56,7 +50,7 @@ export default function handler(req, res) {
           id: 'BI101',
           name: 'Müzik Paneli Aboneliği',
           category1: 'Restoran Hizmeti',
-          itemType: Iyzipay.BASKET_ITEM_TYPE.VIRTUAL,
+          itemType: 'VIRTUAL',
           price: '99.90'
         }
       ]
@@ -72,6 +66,6 @@ export default function handler(req, res) {
       return res.status(200).json({ success: true });
     });
   } else {
-    res.status(405).end(); // Only POST
+    res.status(405).end();
   }
 }
