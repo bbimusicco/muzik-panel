@@ -10,7 +10,6 @@ export default function App() {
   const [password, setPassword] = useState('');
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [selectedPlaylist, setSelectedPlaylist] = useState('Tella Kebap 1');
-  const [isPaid, setIsPaid] = useState(false);
   const [logoFade, setLogoFade] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState('#000');
 
@@ -40,21 +39,6 @@ export default function App() {
     document.body.style.backgroundColor = backgroundColor;
   }, [backgroundColor]);
 
-  // Ödeme yapılmış mı diye kontrol et (localStorage üzerinden)
-  useEffect(() => {
-    if (isLoggedIn) {
-      const info = JSON.parse(localStorage.getItem('paymentInfo'));
-      if (info) {
-        const paidDate = new Date(info.date);
-        const now = new Date();
-        const diffInDays = (now - paidDate) / (1000 * 60 * 60 * 24);
-        if (diffInDays <= 30) {
-          setIsPaid(true);
-        }
-      }
-    }
-  }, [isLoggedIn]);
-
   const handleLogin = (e) => {
     e.preventDefault();
     const validLogins = [
@@ -69,29 +53,6 @@ export default function App() {
       setIsLoggedIn(true);
     } else {
       alert('Kullanıcı adı veya şifre yanlış');
-    }
-  };
-
-  const handleRedirectPayment = async () => {
-    try {
-      const response = await fetch('/api/pay', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: 'Pekcan',
-          surname: 'Birinci',
-          email: 'pekcan@example.com'
-        })
-      });
-
-      const data = await response.json();
-      if (data.success) {
-        window.location.href = data.redirectUrl;
-      } else {
-        alert('Ödeme sayfası oluşturulamadı: ' + (data.error?.message || 'Bilinmeyen hata'));
-      }
-    } catch (error) {
-      alert('Sunucu hatası: ' + error.message);
     }
   };
 
@@ -136,44 +97,35 @@ export default function App() {
       </aside>
 
       <main className="main-content">
-        {!isPaid ? (
-          <div className="payment-prompt">
-            <h2>Çalma listesine erişmek için ödeme yapmalısınız.</h2>
-            <button onClick={handleRedirectPayment}>Ödeme Yap</button>
-          </div>
-        ) : (
+        {tracks.length > 0 && (
           <>
-            {tracks.length > 0 && (
-              <>
-                <div className="track-display">
-                  <img className="track-cover" src={tracks[currentTrackIndex].image} alt="Kapak" />
-                  <h2 className="track-title">{tracks[currentTrackIndex].name}</h2>
-                </div>
+            <div className="track-display">
+              <img className="track-cover" src={tracks[currentTrackIndex].image} alt="Kapak" />
+              <h2 className="track-title">{tracks[currentTrackIndex].name}</h2>
+            </div>
 
-                <AudioPlayer
-                  src={tracks[currentTrackIndex].src}
-                  autoPlay
-                  showSkipControls
-                  showJumpControls={false}
-                  customAdditionalControls={[]}
-                  onClickPrevious={() => {
-                    if (currentTrackIndex > 0) {
-                      setCurrentTrackIndex(currentTrackIndex - 1);
-                    }
-                  }}
-                  onClickNext={() => {
-                    if (currentTrackIndex < tracks.length - 1) {
-                      setCurrentTrackIndex(currentTrackIndex + 1);
-                    }
-                  }}
-                  onEnded={() => {
-                    if (currentTrackIndex < tracks.length - 1) {
-                      setCurrentTrackIndex(currentTrackIndex + 1);
-                    }
-                  }}
-                />
-              </>
-            )}
+            <AudioPlayer
+              src={tracks[currentTrackIndex].src}
+              autoPlay
+              showSkipControls
+              showJumpControls={false}
+              customAdditionalControls={[]}
+              onClickPrevious={() => {
+                if (currentTrackIndex > 0) {
+                  setCurrentTrackIndex(currentTrackIndex - 1);
+                }
+              }}
+              onClickNext={() => {
+                if (currentTrackIndex < tracks.length - 1) {
+                  setCurrentTrackIndex(currentTrackIndex + 1);
+                }
+              }}
+              onEnded={() => {
+                if (currentTrackIndex < tracks.length - 1) {
+                  setCurrentTrackIndex(currentTrackIndex + 1);
+                }
+              }}
+            />
           </>
         )}
       </main>
