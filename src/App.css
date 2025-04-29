@@ -1,3 +1,4 @@
+/* Genel ayarlar */
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -6,77 +7,21 @@ body {
   transition: background-color 0.8s ease;
 }
 
-
-.app-layout {
-  display: flex;
-  min-height: 100vh;
-}
-
-.sidebar {
-  background: rgba(0, 0, 0, 0.3);
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  min-width: 220px;
-}
-
+/* Fade efekt */
+.logo,
 .sidebar-logo {
-  width: 120px;
-  margin-bottom: 20px;
+  height: 100px;
+  object-fit: contain;
+  transition: opacity 0.5s ease;
+  opacity: 1;
 }
 
-.playlist-button {
-  background-color: transparent;
-  color: white;
-  border: 1px solid white;
-  padding: 10px 15px;
-  width: 100%;
-  text-align: center;
-  border-radius: 10px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+.logo.fade-out,
+.sidebar-logo.fade-out {
+  opacity: 0;
 }
 
-.playlist-button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-.playlist-button.active {
-  background-color: white;
-  color: #000;
-}
-
-.main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px;
-  gap: 20px;
-}
-
-.track-cover {
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 10px;
-}
-
-.track-title {
-  margin-top: 10px;
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
-}
-
-audio {
-  width: 100%;
-  max-width: 400px;
-}
+/* Giriş sayfası */
 .login-container {
   display: flex;
   flex-direction: column;
@@ -127,123 +72,75 @@ audio {
   background-color: #ddd;
 }
 
-.logo {
-  width: 150px;
-  margin-bottom: 20px;
-}
-body {
-  margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #000;
-  color: #fff;
-  transition: background-color 0.8s ease; /* fade için burası önemli */
-}
-body {
-  transition: background-color 0.8s ease;
+/* Sayfa düzeni */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
 }
 
-.logo, .sidebar-logo {
-  transition: opacity 0.5s ease;
-  opacity: 1;
+.sidebar {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  min-width: 220px;
 }
 
-.logo.fade-out, .sidebar-logo.fade-out {
-  opacity: 0;
-}
-.fade-in {
-  animation: fadeIn 1s ease forwards;
-  opacity: 0;
+.playlist-button {
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+  padding: 10px 15px;
+  width: 100%;
+  text-align: center;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
+.playlist-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
 }
-.rhap_container {
-  background-color: rgba(255, 255, 255, 0.05) !important;
-  border-radius: 16px;
-  padding: 10px;
-  backdrop-filter: blur(8px);
+
+.playlist-button.active {
+  background-color: white;
+  color: #000;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  gap: 20px;
+}
+
+/* Parça bilgisi */
+.track-cover {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.track-title {
+  margin-top: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Player */
+audio {
   width: 100%;
   max-width: 400px;
-  margin: 20px auto 0 auto;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
-.rhap_main-controls-button {
-  color: #fff !important;
-  font-size: 24px;
-}
-
-.rhap_time {
-  color: #ccc !important;
-}
-
-.rhap_progress-filled {
-  background-color: #1DB954 !important; /* Spotify yeşili */
-}
-
-.rhap_progress-indicator {
-  background-color: #fff !important;
-  width: 12px;
-  height: 12px;
-}
-/* Giriş sayfası fade-in animasyonu */
-.fade-in {
-  animation: fadeIn 1s ease forwards;
-  opacity: 0;
-}
-
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
-}
-
-/* Audio Player Spotify tarzı */
-.rhap_container {
-  background-color: rgba(255, 255, 255, 0.05) !important;
-  border-radius: 16px;
-  padding: 10px;
-  backdrop-filter: blur(8px);
-  width: 100%;
-  max-width: 400px;
-  margin: 20px auto 0 auto;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-}
-
-.rhap_main-controls-button {
-  color: #fff !important;
-  font-size: 24px;
-}
-
-.rhap_time {
-  color: #ccc !important;
-}
-
-.rhap_progress-filled {
-  background-color: #1DB954 !important; /* Spotify yeşili */
-}
-
-.rhap_progress-indicator {
-  background-color: #fff !important;
-  width: 12px;
-  height: 12px;
-}
-/* Fade efekt */
-.fade-in {
-  animation: fadeIn 1s ease forwards;
-  opacity: 0;
-}
-
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
-}
-
-/* Spotify tarzı player */
 .rhap_container {
   background-color: rgba(255, 255, 255, 0.05) !important;
   border-radius: 16px;
@@ -272,34 +169,4 @@ body {
   background-color: #fff !important;
   width: 12px;
   height: 12px;
-}
-.payment-prompt {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  text-align: center;
-  padding: 20px;
-}
-
-.payment-prompt h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: white;
-}
-
-.payment-prompt button {
-  background-color: white;
-  color: #0d2048;
-  border: none;
-  padding: 10px 20px;
-  font-weight: bold;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-
-.payment-prompt button:hover {
-  background-color: #e0e0e0;
 }
