@@ -27,12 +27,11 @@ export default function App() {
     : process.env.PUBLIC_URL + '/logo.png';
 
   useEffect(() => {
-    setLogoFade(true);
-    const timeout = setTimeout(() => setLogoFade(false), 300);
+    const isTella = username === 'tellakebap.1';
     const targetColor = isTella ? '#0d2048' : '#000';
     setBackgroundColor(targetColor);
-    return () => clearTimeout(timeout);
-  }, [isTella]);
+  }, [username]);
+  
 
   useEffect(() => {
     document.body.style.transition = 'background-color 0.8s ease';
