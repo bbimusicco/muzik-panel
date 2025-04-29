@@ -11,7 +11,6 @@ export default function App() {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [selectedPlaylist, setSelectedPlaylist] = useState('Tella Kebap 1');
   const [logoFade, setLogoFade] = useState(false);
-  const [backgroundColor, setBackgroundColor] = useState('#000');
 
   const playlists = {
     'Tella Kebap 1': playlistData['playlists/tella-kebap-demo'],
@@ -21,22 +20,23 @@ export default function App() {
 
   const tracks = playlists[selectedPlaylist] || [];
   const isTella = username === 'tellakebap.1';
-
   const logoSrc = isTella
     ? process.env.PUBLIC_URL + '/tella-logo.png'
     : process.env.PUBLIC_URL + '/logo.png';
 
+  // Arka plan rengi değişimi
   useEffect(() => {
-    const isTella = username === 'tellakebap.1';
     const targetColor = isTella ? '#0d2048' : '#000';
-    setBackgroundColor(targetColor);
-  }, [username]);
-  
-
-  useEffect(() => {
     document.body.style.transition = 'background-color 0.8s ease';
-    document.body.style.backgroundColor = backgroundColor;
-  }, [backgroundColor]);
+    document.body.style.backgroundColor = targetColor;
+  }, [isTella]);
+
+  // Logo geçiş efekti
+  useEffect(() => {
+    setLogoFade(true);
+    const timeout = setTimeout(() => setLogoFade(false), 300);
+    return () => clearTimeout(timeout);
+  }, [isTella]);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -58,7 +58,11 @@ export default function App() {
   if (!isLoggedIn) {
     return (
       <div className="login-container">
-        <img src={logoSrc} alt="Logo" className={`logo ${logoFade ? 'fade-out' : ''}`} />
+        <img
+          src={logoSrc}
+          alt="Logo"
+          className={`logo ${logoFade ? 'fade-out' : ''} ${!isTella ? 'logo-large' : ''}`}
+        />
         <h1 className="title">Restoran Müzik Paneli</h1>
         <form onSubmit={handleLogin} className="login-form">
           <div className="input-group">
@@ -78,7 +82,11 @@ export default function App() {
   return (
     <div className="app-layout">
       <aside className="sidebar">
-        <img src={logoSrc} alt="Logo" className={`sidebar-logo ${logoFade ? 'fade-out' : ''}`} />
+        <img
+          src={logoSrc}
+          alt="Logo"
+          className={`sidebar-logo ${logoFade ? 'fade-out' : ''} ${!isTella ? 'logo-large' : ''}`}
+        />
         <div className="playlist-buttons">
           {Object.keys(playlists).map(name => (
             <button

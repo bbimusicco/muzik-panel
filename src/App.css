@@ -170,3 +170,8 @@ audio {
   width: 12px;
   height: 12px;
 }
+.logo-large,
+.sidebar-logo.logo-large {
+  transform: scale(1.4);
+  transform-origin: center center;
+}
