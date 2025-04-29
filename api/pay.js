@@ -1,5 +1,10 @@
-// pages/api/pay.js (veya api/pay.js altında)
-import iyzico from '../../payment';
+import Iyzipay from 'iyzipay';
+
+const iyzico = new Iyzipay({
+  apiKey: process.env.sandbox-MysDoPgh1uv2k5W6eTS0eTSJcVdDMIKE,
+  secretKey: process.env.sandbox-v0JHTLmlQBfazqCtChWQbexV19JkyRKA,
+  uri: 'https://sandbox-api.iyzipay.com'
+});
 
 export default function handler(req, res) {
   if (req.method !== 'POST') {
