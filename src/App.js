@@ -11,7 +11,6 @@ export default function App() {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [selectedPlaylist, setSelectedPlaylist] = useState('Tella Kebap 1');
   const [isPaid, setIsPaid] = useState(false);
-  const [loadingPayment, setLoadingPayment] = useState(false);
   const [logoFade, setLogoFade] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState('#000');
 
@@ -28,38 +27,31 @@ export default function App() {
     ? process.env.PUBLIC_URL + '/tella-logo.png'
     : process.env.PUBLIC_URL + '/logo.png';
 
-  // Logo ve Arka Plan için Fade Effect
   useEffect(() => {
     setLogoFade(true);
-    const timeout = setTimeout(() => {
-      setLogoFade(false);
-    }, 300);
-
+    const timeout = setTimeout(() => setLogoFade(false), 300);
     const targetColor = isTella ? '#0d2048' : '#000';
     setBackgroundColor(targetColor);
-
     return () => clearTimeout(timeout);
   }, [isTella]);
 
   useEffect(() => {
-    const body = document.body;
-    body.style.transition = 'background-color 0.8s ease';
-    body.style.backgroundColor = backgroundColor;
+    document.body.style.transition = 'background-color 0.8s ease';
+    document.body.style.backgroundColor = backgroundColor;
   }, [backgroundColor]);
 
-  // Ödeme kontrolü artık server'dan geliyor
+  // Ödeme yapılmış mı diye kontrol et (localStorage üzerinden)
   useEffect(() => {
     if (isLoggedIn) {
-      const checkPayment = async () => {
-        try {
-          const response = await fetch(`/api/check-payment/${username}`);
-          const data = await response.json();
-          setIsPaid(data.paid);
-        } catch (error) {
-          console.error('Ödeme kontrol hatası:', error);
+      const info = JSON.parse(localStorage.getItem('paymentInfo'));
+      if (info) {
+        const paidDate = new Date(info.date);
+        const now = new Date();
+        const diffInDays = (now - paidDate) / (1000 * 60 * 60 * 24);
+        if (diffInDays <= 30) {
+          setIsPaid(true);
         }
-      };
-      checkPayment();
+      }
     }
   }, [isLoggedIn]);
 
@@ -80,8 +72,7 @@ export default function App() {
     }
   };
 
-  const handlePayment = async () => {
-    setLoadingPayment(true);
+  const handleRedirectPayment = async () => {
     try {
       const response = await fetch('/api/pay', {
         method: 'POST',
@@ -89,26 +80,19 @@ export default function App() {
         body: JSON.stringify({
           name: 'Pekcan',
           surname: 'Birinci',
-          email: 'pekcan@example.com',
-          cardHolderName: 'Pekcan Birinci',
-          cardNumber: '5528790000000008', // Test kartı
-          expireMonth: '12',
-          expireYear: '2030',
-          cvc: '123'
+          email: 'pekcan@example.com'
         })
       });
 
       const data = await response.json();
       if (data.success) {
-        setIsPaid(true);
-        alert('Ödeme başarılı! 🎉');
+        window.location.href = data.redirectUrl;
       } else {
-        alert('Ödeme başarısız: ' + (data.error?.message || 'Bilinmeyen hata'));
+        alert('Ödeme sayfası oluşturulamadı: ' + (data.error?.message || 'Bilinmeyen hata'));
       }
     } catch (error) {
       alert('Sunucu hatası: ' + error.message);
     }
-    setLoadingPayment(false);
   };
 
   if (!isLoggedIn) {
@@ -155,9 +139,7 @@ export default function App() {
         {!isPaid ? (
           <div className="payment-prompt">
             <h2>Çalma listesine erişmek için ödeme yapmalısınız.</h2>
-            <button onClick={handlePayment} disabled={loadingPayment}>
-              {loadingPayment ? 'Ödeme yapılıyor...' : 'Ödeme Yap'}
-            </button>
+            <button onClick={handleRedirectPayment}>Ödeme Yap</button>
           </div>
         ) : (
           <>
