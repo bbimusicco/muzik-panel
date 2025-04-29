@@ -273,3 +273,33 @@ body {
   width: 12px;
   height: 12px;
 }
+.payment-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  padding: 20px;
+}
+
+.payment-prompt h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.payment-prompt button {
+  background-color: white;
+  color: #0d2048;
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.payment-prompt button:hover {
+  background-color: #e0e0e0;
+}

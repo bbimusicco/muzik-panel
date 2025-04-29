@@ -1,15 +1,10 @@
-import { useEffect } from 'react';
+import React from 'react';
 
 export default function PaymentSuccess() {
-  useEffect(() => {
-    localStorage.setItem('paymentInfo', JSON.stringify({ date: new Date() }));
-  }, []);
-
   return (
-    <div className="payment-success">
-      <h1>✅ Ödemeniz başarıyla alındı!</h1>
-      <p>Artık müzik panelini kullanabilirsiniz.</p>
-      <a href="/">Anasayfaya Dön</a>
+    <div style={{ color: 'white', textAlign: 'center', marginTop: '100px' }}>
+      <h1>🎉 Ödeme Başarılı!</h1>
+      <p>Çalma listelerine erişiminiz açıldı.</p>
     </div>
   );
 }
