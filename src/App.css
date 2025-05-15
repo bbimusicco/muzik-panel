@@ -6,10 +6,10 @@ body {
   transition: background-color 0.8s ease;
 }
 
-/* Küçük ve sabit logo */
+/* Logo: küçük, sabit, fade'li */
 .custom-logo {
   width: 90px;
-  height: auto;
+  height: 90px;
   max-width: 24vw;
   margin-bottom: 14px;
   display: block;
@@ -20,7 +20,7 @@ body {
   opacity: 0;
 }
 
-/* Giriş sayfası */
+/* Giriş ekranı */
 .login-container {
   display: flex;
   flex-direction: column;
@@ -66,7 +66,6 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
 }
-
 .login-button:hover {
   background-color: #ddd;
 }
@@ -87,6 +86,7 @@ body {
   min-width: 220px;
 }
 
+/* Çalma listesi butonları */
 .playlist-button {
   background-color: transparent;
   color: white;
@@ -99,16 +99,15 @@ body {
   cursor: pointer;
   transition: background-color 0.3s;
 }
-
 .playlist-button:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
-
 .playlist-button.active {
   background-color: white;
   color: #000;
 }
 
+/* Ana içerik */
 .main-content {
   flex: 1;
   display: flex;
@@ -119,14 +118,13 @@ body {
   gap: 20px;
 }
 
-/* Parça bilgisi */
+/* Parça kapağı ve başlığı */
 .track-cover {
   width: 200px;
   height: 200px;
   object-fit: cover;
   border-radius: 10px;
 }
-
 .track-title {
   margin-top: 10px;
   font-size: 24px;
@@ -134,12 +132,11 @@ body {
   text-align: center;
 }
 
-/* Player */
+/* Player (Spotify vibe) */
 audio {
   width: 100%;
   max-width: 400px;
 }
-
 .rhap_container {
   background-color: rgba(255, 255, 255, 0.05) !important;
   border-radius: 16px;
@@ -150,20 +147,16 @@ audio {
   margin: 20px auto 0 auto;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
-
 .rhap_main-controls-button {
   color: #fff !important;
   font-size: 24px;
 }
-
 .rhap_time {
   color: #ccc !important;
 }
-
 .rhap_progress-filled {
   background-color: #1DB954 !important;
 }
-
 .rhap_progress-indicator {
   background-color: #fff !important;
   width: 12px;
