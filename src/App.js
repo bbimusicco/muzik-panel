@@ -12,7 +12,6 @@ export default function App() {
   const [selectedPlaylist, setSelectedPlaylist] = useState('Tella Kebap 1');
   const [logoFade, setLogoFade] = useState(false);
   const [displayedLogo, setDisplayedLogo] = useState(process.env.PUBLIC_URL + '/logo.png');
-  const [isTellaUser, setIsTellaUser] = useState(false);
 
   const playlists = {
     'Tella Kebap 1': playlistData['playlists/tella-kebap-demo'],
@@ -22,29 +21,27 @@ export default function App() {
 
   const tracks = playlists[selectedPlaylist] || [];
 
-  // Kullanıcı adını takip ederek isTellaUser'ı güncelle
+  // Logo + background birlikte geçiş
   useEffect(() => {
-    setIsTellaUser(username === 'tellakebap.1');
-  }, [username]);
+    if (!username) return;
 
-  // Logo ve arka plan değişimi
-  useEffect(() => {
+    const isTellaUser = username === 'tellakebap.1';
+    const targetLogo = isTellaUser
+      ? process.env.PUBLIC_URL + '/tella-logo.png'
+      : process.env.PUBLIC_URL + '/logo.png';
+    const targetBg = isTellaUser ? '#0d2048' : '#000';
+
     setLogoFade(true);
+    document.body.style.transition = 'background-color 0.8s ease';
 
     const timeout = setTimeout(() => {
-      setDisplayedLogo(
-        isTellaUser
-          ? process.env.PUBLIC_URL + '/tella-logo.png'
-          : process.env.PUBLIC_URL + '/logo.png'
-      );
+      setDisplayedLogo(targetLogo);
       setLogoFade(false);
-
-      document.body.style.transition = 'background-color 0.8s ease';
-      document.body.style.backgroundColor = isTellaUser ? '#0d2048' : '#000';
+      document.body.style.backgroundColor = targetBg;
     }, 300);
 
     return () => clearTimeout(timeout);
-  }, [isTellaUser]);
+  }, [username]);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -54,7 +51,6 @@ export default function App() {
       { user: 'demo', pass: 'demo' },
       { user: 'tellakebap.1', pass: 't03kdA+n' },
     ];
-
     const matched = validLogins.find(u => u.user === username && u.pass === password);
     if (matched) {
       setIsLoggedIn(true);
