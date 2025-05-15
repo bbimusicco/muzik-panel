@@ -41,7 +41,7 @@ export default function App() {
     }, 300);
 
     return () => clearTimeout(timeout);
-  }, [username]);
+}, [username === 'tellakebap.1']);
 
   const handleLogin = (e) => {
     e.preventDefault();
