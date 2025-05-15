@@ -26,17 +26,16 @@ export default function App() {
 
   useEffect(() => {
     if (!isLoggedIn) return;
-    const isTellaUser = username === 'tellakebap.1';
-    const targetColor = isTellaUser ? '#0d2048' : '#000';
+    const targetColor = isTella ? '#0d2048' : '#000';
     document.body.style.transition = 'background-color 0.8s ease';
     document.body.style.backgroundColor = targetColor;
-  }, [username, isLoggedIn]);
+  }, [isTella, isLoggedIn]);
 
   useEffect(() => {
     setLogoFade(true);
     const timeout = setTimeout(() => setLogoFade(false), 300);
     return () => clearTimeout(timeout);
-  }, [username]);
+  }, [isTella]);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -61,7 +60,7 @@ export default function App() {
         <img
           src={logoSrc}
           alt="Logo"
-          className={`logo ${logoFade ? 'fade-out' : ''} ${!isTella ? 'logo-large' : ''}`}
+          className={`custom-logo ${logoFade ? 'fade-out' : ''}`}
         />
         <h1 className="title">Restoran Müzik Paneli</h1>
         <form onSubmit={handleLogin} className="login-form">
@@ -85,7 +84,7 @@ export default function App() {
         <img
           src={logoSrc}
           alt="Logo"
-          className={`sidebar-logo ${logoFade ? 'fade-out' : ''} ${!isTella ? 'logo-large' : ''}`}
+          className={`custom-logo ${logoFade ? 'fade-out' : ''}`}
         />
         <div className="playlist-buttons">
           {Object.keys(playlists).map(name => (
@@ -110,7 +109,6 @@ export default function App() {
               <img className="track-cover" src={tracks[currentTrackIndex].image} alt="Kapak" />
               <h2 className="track-title">{tracks[currentTrackIndex].name}</h2>
             </div>
-
             <AudioPlayer
               src={tracks[currentTrackIndex].src}
               autoPlay
