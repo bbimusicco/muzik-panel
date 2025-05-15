@@ -1,3 +1,4 @@
+/* Genel ayarlar */
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -6,10 +7,11 @@ body {
   transition: background-color 0.8s ease;
 }
 
-/* Logo için fade efektleri */
+/* Logo animasyonları */
 .custom-logo {
-  width: 120px;
-  height: auto;
+  width: auto;
+  height: 100px;
+  max-width: 200px;
   display: block;
   margin: 0 auto 20px auto;
   object-fit: contain;
@@ -17,18 +19,13 @@ body {
   opacity: 1;
 }
 
+/* Fade efektleri */
 .fade-out {
   opacity: 0;
-}
-
-/* Arkaplan için fade sınıfları */
-.bg-fade-in {
-  opacity: 1;
   transition: opacity 0.3s ease;
 }
-
-.bg-fade-out {
-  opacity: 0.3;
+.fade-in {
+  opacity: 1;
   transition: opacity 0.3s ease;
 }
 
@@ -40,7 +37,7 @@ body {
   justify-content: center;
   height: 100vh;
   text-align: center;
-  background-color: transparent; /* body arkaplanı kullanılır */
+  background-color: transparent;
 }
 
 .login-form {
@@ -131,6 +128,7 @@ body {
   gap: 20px;
 }
 
+/* Parça bilgisi */
 .track-cover {
   width: 200px;
   height: 200px;
@@ -145,6 +143,7 @@ body {
   text-align: center;
 }
 
+/* Audio player */
 .rhap_container {
   background-color: rgba(255, 255, 255, 0.05) !important;
   border-radius: 16px;

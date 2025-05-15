@@ -12,6 +12,7 @@ export default function App() {
   const [selectedPlaylist, setSelectedPlaylist] = useState('Tella Kebap 1');
   const [logoFade, setLogoFade] = useState(false);
   const [displayedLogo, setDisplayedLogo] = useState(process.env.PUBLIC_URL + '/logo.png');
+  const [isTellaUser, setIsTellaUser] = useState(false);
 
   const playlists = {
     'Tella Kebap 1': playlistData['playlists/tella-kebap-demo'],
@@ -20,37 +21,30 @@ export default function App() {
   };
 
   const tracks = playlists[selectedPlaylist] || [];
-  const isTella = username === 'tellakebap.1';
 
-  // Arka plan rengi geçişi
+  // Kullanıcı adını takip ederek isTellaUser'ı güncelle
   useEffect(() => {
-    if (!isLoggedIn) return;
-    const targetColor = isTella ? '#0d2048' : '#000';
-    document.body.style.transition = 'background-color 0.8s ease';
-    document.body.style.backgroundColor = targetColor;
-  }, [isTella, isLoggedIn]);
+    setIsTellaUser(username === 'tellakebap.1');
+  }, [username]);
 
+  // Logo ve arka plan değişimi
   useEffect(() => {
-  const isTellaUser = username === 'tellakebap.1';
+    setLogoFade(true);
 
-  // Logo değişimi
-  setLogoFade(true);
-  const logoTimeout = setTimeout(() => {
-    setDisplayedLogo(
-      isTellaUser
-        ? process.env.PUBLIC_URL + '/tella-logo.png'
-        : process.env.PUBLIC_URL + '/logo.png'
-    );
-    setLogoFade(false);
-  }, 300);
+    const timeout = setTimeout(() => {
+      setDisplayedLogo(
+        isTellaUser
+          ? process.env.PUBLIC_URL + '/tella-logo.png'
+          : process.env.PUBLIC_URL + '/logo.png'
+      );
+      setLogoFade(false);
 
-  // Arkaplan rengi geçişi
-  document.body.style.transition = 'background-color 0.8s ease';
-  document.body.style.backgroundColor = isTellaUser ? '#0d2048' : '#000';
+      document.body.style.transition = 'background-color 0.8s ease';
+      document.body.style.backgroundColor = isTellaUser ? '#0d2048' : '#000';
+    }, 300);
 
-  return () => clearTimeout(logoTimeout);
-}, [username]);
-
+    return () => clearTimeout(timeout);
+  }, [isTellaUser]);
 
   const handleLogin = (e) => {
     e.preventDefault();
