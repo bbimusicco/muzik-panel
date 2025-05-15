@@ -11,6 +11,7 @@ export default function App() {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [selectedPlaylist, setSelectedPlaylist] = useState('Tella Kebap 1');
   const [logoFade, setLogoFade] = useState(false);
+  const [displayedLogo, setDisplayedLogo] = useState(process.env.PUBLIC_URL + '/logo.png');
 
   const playlists = {
     'Tella Kebap 1': playlistData['playlists/tella-kebap-demo'],
@@ -32,10 +33,14 @@ export default function App() {
   }, [isTella, isLoggedIn]);
 
   useEffect(() => {
+    if (!isLoggedIn) return;
     setLogoFade(true);
-    const timeout = setTimeout(() => setLogoFade(false), 300);
+    const timeout = setTimeout(() => {
+      setDisplayedLogo(logoSrc);
+      setLogoFade(false);
+    }, 300);
     return () => clearTimeout(timeout);
-  }, [isTella]);
+  }, [logoSrc, isLoggedIn]);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -58,9 +63,9 @@ export default function App() {
     return (
       <div className="login-container">
         <img
-          src={logoSrc}
+          src={displayedLogo}
           alt="Logo"
-          className={custom-logo ${logoFade ? 'fade-out' : ''}}
+          className={`custom-logo ${logoFade ? 'fade-out' : ''}`}
         />
         <h1 className="title">Restoran Müzik Paneli</h1>
         <form onSubmit={handleLogin} className="login-form">
@@ -82,15 +87,15 @@ export default function App() {
     <div className="app-layout">
       <aside className="sidebar">
         <img
-          src={logoSrc}
+          src={displayedLogo}
           alt="Logo"
-          className={custom-logo ${logoFade ? 'fade-out' : ''}}
+          className={`custom-logo ${logoFade ? 'fade-out' : ''}`}
         />
         <div className="playlist-buttons">
           {Object.keys(playlists).map(name => (
             <button
               key={name}
-              className={playlist-button ${selectedPlaylist === name ? 'active' : ''}}
+              className={`playlist-button ${selectedPlaylist === name ? 'active' : ''}`}
               onClick={() => {
                 setSelectedPlaylist(name);
                 setCurrentTrackIndex(0);
