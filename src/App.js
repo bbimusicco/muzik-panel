@@ -21,7 +21,7 @@ export default function App() {
 
   const tracks = playlists[selectedPlaylist] || [];
 
-  // Logo + background birlikte geçiş
+  // LOGO + BACKGROUND birlikte geçiş
   useEffect(() => {
     if (!username) return;
 
@@ -38,32 +38,6 @@ export default function App() {
       setDisplayedLogo(targetLogo);
       setLogoFade(false);
       document.body.style.backgroundColor = targetBg;
-    }, 300);
-
-    return () => clearTimeout(timeout);
-}, [username === 'tellakebap.1']);
-function App() {
-  // ... state'ler
-
-  // ... diğer useEffect'ler (örn. login kontrolü, logoFade vs.)
-
-  // BURAYA YAPIŞTIR:
-  useEffect(() => {
-    if (!username) return;
-
-    const isTella = username === 'tellakebap.1';
-    const nextLogo = isTella
-      ? process.env.PUBLIC_URL + '/tella-logo.png'
-      : process.env.PUBLIC_URL + '/logo.png';
-    const nextBg = isTella ? '#0d2048' : '#000';
-
-    setLogoFade(true);
-    document.body.style.transition = 'background-color 0.3s ease';
-
-    const timeout = setTimeout(() => {
-      setDisplayedLogo(nextLogo);
-      setLogoFade(false);
-      document.body.style.backgroundColor = nextBg;
     }, 300);
 
     return () => clearTimeout(timeout);
@@ -89,12 +63,12 @@ function App() {
     return (
       <div className="login-container">
         <div className="logo-wrapper">
-  <img
-    src={displayedLogo}
-    alt="Logo"
-    className={`custom-logo ${logoFade ? 'fade-out' : ''}`}
-  />
-</div>
+          <img
+            src={displayedLogo}
+            alt="Logo"
+            className={`custom-logo ${logoFade ? 'fade-out' : ''}`}
+          />
+        </div>
         <h1 className="title">Restoran Müzik Paneli</h1>
         <form onSubmit={handleLogin} className="login-form">
           <div className="input-group">
