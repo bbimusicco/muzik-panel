@@ -1,164 +1,171 @@
-body {
-  margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #000;
-  color: #fff;
-  transition: background-color 0.8s ease;
-}
+// App.js
 
-/* Logo: küçük, sabit, fade'li */
-.custom-logo {
-  width: 90px;
-  height: 90px;
-  max-width: 24vw;
-  margin-bottom: 14px;
-  display: block;
-  transition: opacity 0.5s;
-  object-fit: contain;
-}
-.custom-logo.fade-out {
-  opacity: 0;
-}
+import React, { useState, useEffect } from 'react';
+import 'react-h5-audio-player/lib/styles.css';
+import './App.css';
+import AudioPlayer from 'react-h5-audio-player';
+import playlistData from './playlists.json';
 
-/* Giriş ekranı */
-.login-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  text-align: center;
-  background-color: #000;
-}
+export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  const [selectedPlaylist, setSelectedPlaylist] = useState('Tella Kebap 1');
 
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 20px;
-}
+  // LOGO transition state
+  const [logoFade, setLogoFade] = useState(false);
+  const [displayedLogo, setDisplayedLogo] = useState(process.env.PUBLIC_URL + '/logo.png');
 
-.input-group {
-  display: flex;
-  align-items: center;
-  background-color: #111;
-  padding: 8px;
-  border-radius: 4px;
-  border: 1px solid #444;
-}
+  // Background color transition state
+  const [backgroundFade, setBackgroundFade] = useState(false);
+  const [bgColor, setBgColor] = useState('#000');
 
-.input-group input {
-  background: none;
-  border: none;
-  color: white;
-  outline: none;
-  flex: 1;
-  margin-left: 8px;
-}
+  const playlists = {
+    'Tella Kebap 1': playlistData['playlists/tella-kebap-demo'],
+    'Tella Kebap 2': playlistData['playlists/tella-kebap-demo'],
+    'Tella Kebap 3': playlistData['playlists/tella-kebap-demo'],
+  };
 
-.login-button {
-  padding: 10px;
-  background-color: white;
-  color: black;
-  font-weight: bold;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-.login-button:hover {
-  background-color: #ddd;
-}
+  const tracks = playlists[selectedPlaylist] || [];
+  const isTella = username === 'tellakebap.1';
+  const nextLogo = isTella
+    ? process.env.PUBLIC_URL + '/tella-logo.png'
+    : process.env.PUBLIC_URL + '/logo.png';
+  const nextBgColor = isTella ? '#0d2048' : '#000';
 
-/* Sayfa düzeni */
-.app-layout {
-  display: flex;
-  min-height: 100vh;
-}
+  // Login fonksiyonu
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const validLogins = [
+      { user: 'admin', pass: 'Babalar2009!' },
+      { user: 'admin1', pass: 'Babalar2009!' },
+      { user: 'demo', pass: 'demo' },
+      { user: 'tellakebap.1', pass: 't03kdA+n' },
+    ];
+    const matched = validLogins.find(u => u.user === username && u.pass === password);
+    if (matched) {
+      setIsLoggedIn(true);
+    } else {
+      alert('Kullanıcı adı veya şifre yanlış');
+    }
+  };
 
-.sidebar {
-  background: rgba(0, 0, 0, 0.3);
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  min-width: 220px;
-}
+  // LOGO transition effect
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    // 1. Fade-out (opacity 0)
+    setLogoFade(true);
+    // 2. Logoyu değiştir
+    const timeout = setTimeout(() => {
+      setDisplayedLogo(nextLogo);
+      // 3. Fade-in (opacity 1)
+      setLogoFade(false);
+    }, 300); // fade süresiyle aynı olmalı
+    return () => clearTimeout(timeout);
+    // username ve login değişince tetiklenir
+  }, [isTella, isLoggedIn, nextLogo]);
 
-/* Çalma listesi butonları */
-.playlist-button {
-  background-color: transparent;
-  color: white;
-  border: 1px solid white;
-  padding: 10px 15px;
-  width: 100%;
-  text-align: center;
-  border-radius: 10px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-.playlist-button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-.playlist-button.active {
-  background-color: white;
-  color: #000;
-}
+  // Background color transition
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    setBackgroundFade(true);
+    // Hafif gecikme ile bg rengini değiştir (animasyon için)
+    const timeout = setTimeout(() => {
+      setBgColor(nextBgColor);
+      setBackgroundFade(false);
+    }, 300); // CSS ile aynı sürede olmalı
+    return () => clearTimeout(timeout);
+  }, [isTella, isLoggedIn, nextBgColor]);
 
-/* Ana içerik */
-.main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px;
-  gap: 20px;
-}
+  // Body arkaplanını güncelle
+  useEffect(() => {
+    document.body.style.transition = 'background-color 0.8s ease';
+    document.body.style.backgroundColor = bgColor;
+  }, [bgColor]);
 
-/* Parça kapağı ve başlığı */
-.track-cover {
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 10px;
-}
-.track-title {
-  margin-top: 10px;
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
-}
+  // Giriş ekranı
+  if (!isLoggedIn) {
+    return (
+      <div className="login-container">
+        <img
+          src={displayedLogo}
+          alt="Logo"
+          className={`custom-logo${logoFade ? ' fade-out' : ''}`}
+        />
+        <h1 className="title">Restoran Müzik Paneli</h1>
+        <form onSubmit={handleLogin} className="login-form">
+          <div className="input-group">
+            <span role="img" aria-label="user">👤</span>
+            <input placeholder="Kullanıcı Adı" onChange={(e) => setUsername(e.target.value)} />
+          </div>
+          <div className="input-group">
+            <span role="img" aria-label="lock">🔒</span>
+            <input type="password" placeholder="Şifre" onChange={(e) => setPassword(e.target.value)} />
+          </div>
+          <button type="submit" className="login-button">Giriş Yap</button>
+        </form>
+      </div>
+    );
+  }
 
-/* Player (Spotify vibe) */
-audio {
-  width: 100%;
-  max-width: 400px;
-}
-.rhap_container {
-  background-color: rgba(255, 255, 255, 0.05) !important;
-  border-radius: 16px;
-  padding: 10px;
-  backdrop-filter: blur(8px);
-  width: 100%;
-  max-width: 400px;
-  margin: 20px auto 0 auto;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-}
-.rhap_main-controls-button {
-  color: #fff !important;
-  font-size: 24px;
-}
-.rhap_time {
-  color: #ccc !important;
-}
-.rhap_progress-filled {
-  background-color: #1DB954 !important;
-}
-.rhap_progress-indicator {
-  background-color: #fff !important;
-  width: 12px;
-  height: 12px;
+  // Playlist ekranı
+  return (
+    <div className="app-layout">
+      <aside className="sidebar">
+        <img
+          src={displayedLogo}
+          alt="Logo"
+          className={`custom-logo${logoFade ? ' fade-out' : ''}`}
+        />
+        <div className="playlist-buttons">
+          {Object.keys(playlists).map(name => (
+            <button
+              key={name}
+              className={`playlist-button ${selectedPlaylist === name ? 'active' : ''}`}
+              onClick={() => {
+                setSelectedPlaylist(name);
+                setCurrentTrackIndex(0);
+              }}
+            >
+              {name}
+            </button>
+          ))}
+        </div>
+      </aside>
+
+      <main className="main-content">
+        {tracks.length > 0 && (
+          <>
+            <div className="track-display">
+              <img className="track-cover" src={tracks[currentTrackIndex].image} alt="Kapak" />
+              <h2 className="track-title">{tracks[currentTrackIndex].name}</h2>
+            </div>
+            <AudioPlayer
+              src={tracks[currentTrackIndex].src}
+              autoPlay
+              showSkipControls
+              showJumpControls={false}
+              customAdditionalControls={[]}
+              onClickPrevious={() => {
+                if (currentTrackIndex > 0) {
+                  setCurrentTrackIndex(currentTrackIndex - 1);
+                }
+              }}
+              onClickNext={() => {
+                if (currentTrackIndex < tracks.length - 1) {
+                  setCurrentTrackIndex(currentTrackIndex + 1);
+                }
+              }}
+              onEnded={() => {
+                if (currentTrackIndex < tracks.length - 1) {
+                  setCurrentTrackIndex(currentTrackIndex + 1);
+                }
+              }}
+            />
+          </>
+        )}
+      </main>
+    </div>
+  );
 }
