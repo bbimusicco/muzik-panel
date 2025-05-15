@@ -9,10 +9,10 @@ body {
 
 /* Logo animasyonları */
 .custom-logo {
-  width: 120px;
+  width: 160px;
   height: auto;
   display: block;
-  margin: 0 auto 10px auto;
+  margin: 0 auto 20px auto;
   object-fit: contain;
   transition: opacity 0.3s ease;
   opacity: 1;
@@ -228,4 +228,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+h1.title {
+  font-size: 18px !important;
+  font-weight: 400;
+  margin-bottom: 10px;
+  color: #ccc;
+  letter-spacing: 0.5px;
+  text-align: center;
 }
