@@ -9,23 +9,41 @@ body {
 
 /* Logo animasyonları */
 .custom-logo {
-  width: auto;
-  height: 100px;
-  max-width: 200px;
+  width: 120px;
+  height: auto;
   display: block;
-  margin: 0 auto 20px auto;
+  margin: 0 auto 10px auto;
   object-fit: contain;
   transition: opacity 0.3s ease;
   opacity: 1;
 }
 
-/* Fade efektleri */
 .fade-out {
   opacity: 0;
   transition: opacity 0.3s ease;
 }
+
 .fade-in {
   opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.brand-subtitle {
+  font-size: 16px;
+  font-weight: 300;
+  color: #ccc;
+  margin-top: -5px;
+  text-align: center;
+}
+
+/* Arkaplan animasyon sınıfları */
+.bg-opaque {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.bg-transparent {
+  opacity: 0.3;
   transition: opacity 0.3s ease;
 }
 
@@ -129,6 +147,21 @@ body {
 }
 
 /* Parça bilgisi */
+.track-display {
+  background-color: rgba(255, 255, 255, 0.04);
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  backdrop-filter: blur(6px);
+  text-align: center;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 .track-cover {
   width: 200px;
   height: 200px;
@@ -172,4 +205,20 @@ body {
   background-color: #fff !important;
   width: 12px;
   height: 12px;
+}
+
+@media (max-width: 768px) {
+  .app-layout {
+    flex-direction: column;
+  }
+  .sidebar {
+    flex-direction: row;
+    justify-content: center;
+    min-width: unset;
+    padding: 10px;
+  }
+  .playlist-buttons {
+    flex-direction: row;
+    gap: 10px;
+  }
 }
