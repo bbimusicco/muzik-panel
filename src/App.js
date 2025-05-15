@@ -30,21 +30,27 @@ export default function App() {
     document.body.style.backgroundColor = targetColor;
   }, [isTella, isLoggedIn]);
 
-  // Logo geçişi
   useEffect(() => {
-    if (!isLoggedIn) return;
-    setLogoFade(true);
+  const isTellaUser = username === 'tellakebap.1';
 
-    const timeout = setTimeout(() => {
-      const nextLogo = isTella
+  // Logo değişimi
+  setLogoFade(true);
+  const logoTimeout = setTimeout(() => {
+    setDisplayedLogo(
+      isTellaUser
         ? process.env.PUBLIC_URL + '/tella-logo.png'
-        : process.env.PUBLIC_URL + '/logo.png';
-      setDisplayedLogo(nextLogo);
-      setLogoFade(false);
-    }, 300);
+        : process.env.PUBLIC_URL + '/logo.png'
+    );
+    setLogoFade(false);
+  }, 300);
 
-    return () => clearTimeout(timeout);
-  }, [isLoggedIn, isTella]);
+  // Arkaplan rengi geçişi
+  document.body.style.transition = 'background-color 0.8s ease';
+  document.body.style.backgroundColor = isTellaUser ? '#0d2048' : '#000';
+
+  return () => clearTimeout(logoTimeout);
+}, [username]);
+
 
   const handleLogin = (e) => {
     e.preventDefault();
