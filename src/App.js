@@ -21,10 +21,8 @@ export default function App() {
 
   const tracks = playlists[selectedPlaylist] || [];
   const isTella = username === 'tellakebap.1';
-  const logoSrc = isTella
-    ? process.env.PUBLIC_URL + '/tella-logo.png'
-    : process.env.PUBLIC_URL + '/logo.png';
 
+  // Arka plan rengi geçişi
   useEffect(() => {
     if (!isLoggedIn) return;
     const targetColor = isTella ? '#0d2048' : '#000';
@@ -32,15 +30,21 @@ export default function App() {
     document.body.style.backgroundColor = targetColor;
   }, [isTella, isLoggedIn]);
 
+  // Logo geçişi
   useEffect(() => {
     if (!isLoggedIn) return;
     setLogoFade(true);
+
     const timeout = setTimeout(() => {
-      setDisplayedLogo(logoSrc);
+      const nextLogo = isTella
+        ? process.env.PUBLIC_URL + '/tella-logo.png'
+        : process.env.PUBLIC_URL + '/logo.png';
+      setDisplayedLogo(nextLogo);
       setLogoFade(false);
     }, 300);
+
     return () => clearTimeout(timeout);
-  }, [logoSrc, isLoggedIn]);
+  }, [isLoggedIn, isTella]);
 
   const handleLogin = (e) => {
     e.preventDefault();
