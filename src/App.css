@@ -222,3 +222,10 @@ body {
     gap: 10px;
   }
 }
+/* Logo sabitleme alanı */
+.logo-wrapper {
+  height: 100px; /* logoların en yükseği kadar bir alan */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

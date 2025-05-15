@@ -62,11 +62,13 @@ export default function App() {
   if (!isLoggedIn) {
     return (
       <div className="login-container">
-        <img
-          src={displayedLogo}
-          alt="Logo"
-          className={`custom-logo ${logoFade ? 'fade-out' : ''}`}
-        />
+        <div className="logo-wrapper">
+  <img
+    src={displayedLogo}
+    alt="Logo"
+    className={`custom-logo ${logoFade ? 'fade-out' : ''}`}
+  />
+</div>
         <h1 className="title">Restoran Müzik Paneli</h1>
         <form onSubmit={handleLogin} className="login-form">
           <div className="input-group">
